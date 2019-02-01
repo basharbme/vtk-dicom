@@ -1,0 +1,16 @@
+NAME
+  VTK::DICOM
+LIBRARY_NAME
+  DICOM
+DEPENDS
+  VTK::ImagingCore
+  VTK::IOImage
+  VTK::IOCore
+PRIVATE_DEPENDS
+  VTK::zlib
+  VTK::ImagingStatistics
+  VTK::InteractionStyle
+  VTK::RenderingImage
+  VTK::RenderingOpenGL2
+DESCRIPTION
+  DICOM classes for VTK

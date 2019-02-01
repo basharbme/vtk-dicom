@@ -29,12 +29,17 @@ set(DICOM_INCLUDE_DIRS
   "${DICOM_SOURCE_DIR}/Source"
   "${DICOM_BINARY_DIR}/Source")
 
+set(Module_vtkDICOM ON)
+
 if(Module_vtkDICOM) # We are being built as a VTK remote module
 
   message(STATUS "vtkDICOM: Building vtkDICOM as a Remote VTK Module")
   set(vtkDICOM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Source)
   set(vtkDICOM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Source)
-  vtk_module_impl()
+
+  if(VTK_VERSION VERSION_LESS "8.90.0")
+    vtk_module_impl()
+  endif()
 
   # Clear VTK_LIBS, linking will be handled by modular build
   set(VTK_LIBS)

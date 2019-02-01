@@ -13,7 +13,11 @@ configure_file(${DICOM_CMAKE_DIR}/vtkDICOMBuild.h.in
 include_directories(${DICOM_INCLUDE_DIRS})
 
 # Create the main library
-set(LIB_NAME vtkDICOM)
+if(VTK_VERSION VERSION_LESS "8.90.0" OR NOT Module_vtkDICOM)
+  set(LIB_NAME vtkDICOM)
+else()
+  set(LIB_NAME VTK::DICOM)
+endif()
 
 if(WIN32)
   set(REFCOUNT_SRC vtkDICOMReferenceCount.cxx)
@@ -125,7 +129,12 @@ set_source_files_properties(${LIB_PRIVATE_HDRS}
 
 if(Module_vtkDICOM) # Building as a VTK remote module
 
-  vtk_module_library(vtkDICOM ${LIB_SRCS} ${LIB_HDRS})
+  if(VTK_VERSION VERSION_LESS "8.90.0")
+    vtk_module_library(${LIB_NAME} ${Module_SRCS})
+  else()
+    vtk_module_add_module(${LIB_NAME} SOURCES ${Module_SRCS})
+  endif()
+
   target_link_libraries(${LIB_NAME}
     LINK_PRIVATE ${GDCM_LIBS} ${DCMTK_LIBS} ${SQLITE_LIBS})
 
